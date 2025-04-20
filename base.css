@@ -1,34 +1,63 @@
-html {
-    height: 100%;
-    overflow-y: scroll;
-  }
+  html {
+      height: 100%;
+      overflow-y: scroll;
+    }
   
-  body {
-    height: 100%;
+  :root {
+    --bg-color: #f4f6f9;
+    --main-text: #2c3e50;
+    --accent: #00205B;
+    --subtle: #90a4ae;
+    }
+
+    body {
+    margin: 0;
+    padding: 2rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--main-text);
+    line-height: 1.6;
+    }
+    h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    border-bottom: 3px solid var(--accent);
+    display: inline-block;
+    padding-bottom: 0.2rem;
+    letter-spacing: 1px;
+    }
+    h2 {
+    font-size: 1.8rem;
+    border-left: 6px solid var(--accent);
+    padding-left: 0.8rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--accent);
+    }
+
+    h3 {
+    font-size: 1.4rem;
+    color: var(--main-text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--subtle);
+    padding-bottom: 0.3rem;
+    }
+
+    p {
+    margin-bottom: 1rem;
+    }
+
+    .container {
+    max-width: 800px;
+    margin: auto;
     background: #fff;
-    color: #444;
-    line-height: 1.4;
-  }
-  
-  body, input, button, textarea, select {
-    font-family: Verdana, Helvetica, "游ゴシック", "Yu Gothic", "メイリオ", sans-serif;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    font-family: Segoe UI, sans-serif;
-    /*letter-spacing: .1em;*/
-  }
-  
-  h1 { font-size: 1.5em; }
-  h2 { font-size: 1.4em; }
-  h3 { font-size: 1.3em; }
-  h4 { font-size: 1.2em; }
-  h5 { font-size: 1.1em; }
-  h6 { font-size: 1em; }
-  
-  h1, h2, h3, h4, h5, h6, p, pre, ul, ol, dl {
-    padding: 0 30px;
-  }
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
   
   a:link {
     color: #000acc;
@@ -43,14 +72,37 @@ html {
     background-color: #fff;
   }
   
+  dl {
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
   dt {
-    /* font-weight: bold; */
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--accent);
+    margin-top: 1.2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--subtle);
+    display: inline-block;
+    padding-bottom: 0.2rem;
   }
+  
   dd {
-    margin-left: 0;
-    padding-left: 2em;
-    /* margin-top: .5em; */
+    margin-left: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--main-text);
+    position: relative;
+    padding-left: 1rem;
   }
+  
+  dd::before {
+    content: "•";
+    color: var(--subtle);
+    position: absolute;
+    left: 0;
+  }
+  
   li {
     margin-left: 30px;
   }
@@ -67,3 +119,33 @@ html {
   #last_modified {
     text-align: right;
   }
+
+/* メディアクエリ */
+  @media (max-width: 600px) {
+    body {
+      padding: 1rem;
+    }
+  
+    .container {
+      padding: 1.5rem;
+      box-shadow: none;
+      border-radius: 8px;
+    }
+  
+    h1 {
+      font-size: 2rem;
+    }
+  
+    h2 {
+      font-size: 1.4rem;
+    }
+  
+    h3 {
+      font-size: 1.2rem;
+    }
+  
+    dt {
+      font-size: 1rem;
+    }
+  }
+  
