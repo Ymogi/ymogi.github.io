@@ -85,7 +85,7 @@
     // 自動目次生成スクリプト
     document.addEventListener("DOMContentLoaded", function () {
       const tocList = document.getElementById("toc-list");
-      const headers = document.querySelectorAll("h2, h3");
+      const headers = document.querySelectorAll("h2");
       let idCounter = 0;
 
       headers.forEach(header => {
