@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>研究日記：第一回</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      padding: 2rem;
+      background: #fefefe;
+      line-height: 1.6;
+    }
+
+    h1 {
+      color: #00205B;
+      margin-bottom: 1em;
+    }
+
+    h2, h3 {
+      color: #333;
+      margin-top: 2em;
+    }
+
+    .toc {
+      background: #f0f4f8;
+      padding: 1em;
+      margin-bottom: 2em;
+      border-left: 4px solid #00205B;
+      border-radius: 6px;
+    }
+
+    .toc h2 {
+      font-size: 1.2em;
+      margin-bottom: 0.5em;
+    }
+
+    .toc ul {
+      padding-left: 1em;
+      margin: 0;
+    }
+
+    .toc li {
+      list-style-type: none;
+      margin-bottom: 0.3em;
+    }
+
+    .toc a {
+      color: #00205B;
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>研究日記：第一回</h1>
+
+  <div class="toc" id="toc">
+    <h2>目次</h2>
+    <ul id="toc-list"></ul>
+  </div>
+
+  <!-- 本文 -->
+  <h2>導入</h2>
+  <p>今日は〇〇について調査した。</p>
+
+  <h2>方法</h2>
+  <h3>A手法</h3>
+  <p>文献調査を行った。</p>
+
+  <h3>B手法</h3>
+  <p>フィールド調査を行った。</p>
+
+  <h2>結果と考察</h2>
+  <p>結果は以下の通りである。</p>
+
+  <h2>次回の予定</h2>
+  <p>次は〇〇について進める。</p>
+
+  <script>
+    // 自動目次生成スクリプト
+    document.addEventListener("DOMContentLoaded", function () {
+      const tocList = document.getElementById("toc-list");
+      const headers = document.querySelectorAll("h2, h3");
+      let idCounter = 0;
+
+      headers.forEach(header => {
+        const level = header.tagName.toLowerCase();
+        if (!header.id) {
+          idCounter += 1;
+          header.id = "section-" + idCounter;
+        }
+
+        const li = document.createElement("li");
+        li.style.marginLeft = level === "h3" ? "1em" : "0";
+
+        const link = document.createElement("a");
+        link.href = "#" + header.id;
+        link.textContent = header.textContent;
+
+        li.appendChild(link);
+        tocList.appendChild(li);
+      });
+    });
+  </script>
+
+</body>
+</html>

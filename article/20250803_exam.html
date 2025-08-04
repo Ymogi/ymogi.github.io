@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>【2025年8月実施(2026年入学)】京都大学情報学研究科社会情報学コース大学院入試、基礎科目解説</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="template.css">
+</head>
+<body>
+
+  <h1>【2025年8月実施(2026年入学)】京都大学情報学研究科社会情報学コース大学院入試、基礎科目解答</h1>
+
+  <p>
+    2025年の8月2日に実施された京都大学情報学研究科 
+    社会情報学コースの大学院試験 基礎科目の解説です。<br>
+    基礎科目はアルゴリズムを問う問題が多くて解いてて楽しいので解きました。
+    これから受験する人の参考になったら嬉しいです。
+    回答内容についてはあくまで私の回答なので、参考程度にしてください。
+    どうしても修正したい点があるならプルリクしてください。
+  </p>
+
+  <div class="toc" id="toc">
+    <h2>目次</h2>
+    <ul id="toc-list"></ul>
+  </div>
+
+  <!-- 本文 -->
+  <h2>大問1(マシン語)</h2>
+  <p>  
+    マシン語は限られた条件や操作でいかにアルゴリズムを実装するかが問われる問題です。
+できる操作が限られるので、プリミティブに考えることが大事なのかなと思っています。
+試験におけるコツとしては最後まで諦めずに手法を考え続けることだと思います。
+ふと解き方が浮かんできたりします。
+  </p>
+  <h3>(1)</h3>
+  <p>  
+    自然数MとNの大小比較を行う問題です。高級な言語ならif文で一発ですが、マシン語ではそうはいきません。
+私が思いついた解法はレジスタ0に格納した値を1ずつインクリメントし、その度にJunp命令を用いて
+MとNに一致するかを判定します。これにより、レジスタ0の値がMに先に一致した場合はMの方が小さい、
+レジスタ0の値がNに先に一致した場合はNの方が小さいと判断できます。<br>
+また、これだけでは大小判定しかできないので、レジスタ0の値がMと一致した際にはNと一致するかも判定し、
+M=Nであるかの判定を行います。
+ロード命令が4回までしか実行できないので、おそらくこのやり方になると思います。
+(最初にN=Mの判定をしているとロードの回数が足りなくなりました)<br>
+この問題の仮定として、レジスタの初期値が0であることが仮定されていません。
+レジスタに0を格納するためには最初はロードを用いますが、そのあとは
+add命令を用いて0+0=0を指定レジスタに格納という手法を用います。<br>
+レジスタ0の値のインクリメントのループを作るためにはjump命令を用います。
+jump命令の実行時にレジスタ0とレジスタ0の値の比較を行うことにより、必ずジャンプする処理を実装できます。
+これによりループ命令を実装します。
+以下がアルゴリズムの実装のフローです。
+すみません、、さすがにマシン語まで書くのはしんどいので、割愛します。
+  </p>
+  <img src="images/exam_image1.png" width="500" >
+
+<p>
+この問題を考える際の考え方の道筋は、まず分岐の実装はjump命令を使うしかないということです。
+そのため使える判定はレジスタ0との値が同じかどうかということです。
+そのため、大小の比較ではなく、値が同じかどうかという処理を基準に解法を検討します。
+そして次のヒントはM,Nが255までの数字ということです。
+8bitにおいては255が上限であることを考えると、
+作問者はこの(1)の問題では、引き算は用いないと想定しているということが推察されます。
+(引き算を用いるということは-の値の範囲が必要になるので8bitだと-128~127です。
+128以上の値を取りうる時点で引き算は想定されていません)
+このことからM-Nとか、N-Mをしてその正負を見るみたいな解法ではないと判断します。
+よって足し算を用いた解法を検討します。
+このタイミングでレジスタ0のインクリメントという解法に辿り着きました。
+条件が多いですが、その条件によって何が排除されるのかを考えるのが、回答に辿り着く近道になります。
+
+
+</p>
+
+  <h3>(2)</h3>
+<p>
+(2)は掛け算と引き算の実装が求められます。
+まず掛け算はn × Aを実装する場合、add命令をn回ループするという手法を用います。
+そして引き算は2の補数表現を利用します。
+a-bを実装する場合、ビット反転したbを~bとおくと、a-b = a+(~b)+1で実現可能です。
+そのため、ビット反転が必要になります。
+ビット反転は、反転したい数字と0xFFとの排他的論理和(XOR)をとることで実現できます。
+仮定においてアドレスD1にFFが格納されているのは、ビット反転をさせるためとおいうことになります。
+これもある意味実装すべき操作のヒントになっていたのかと思います。<br>
+また、この問題もロード命令の回数に制限があるので、0の格納にも1-1=0を用いて値の格納をします。
+掛け算はFnの値の回数だけ行って、その後mの回数だけその処理を繰り返します。
+解答における困難な点はループ処理、掛け算、引き算なのでそこまでアルゴリズムが難しいということはないかと思います。
+以下がアルゴリズムの実装のフローです。
+</p>
+<img src="images/exam_image2.png" width="500" >
+
+<p>
+2の補数表現による引き算の実装は抑えてたらかなり勉強してた人の部類に入ると思います。
+私にとって2の補数表現なんて、学部の1回か2回に軽く教わって、正直意味わからないままの概念です。
+実際の試験においてはまず日本語で実装するアルゴリズムの概要を示しておくのがいいと思います。
+そうすれば少々マシン語の記述で実装手順に間違いがあってもいくらかばかし部分点がもらえると思います。
+</p>
+
+<h2>大問2</h2>
+<h3>(1)</h3>
+<p>
+133.3.201.145<br>
+どうやらこのipは京大が所有しているipアドレスのひとつのようです。
+</p>
+
+<h3>(2)</h3>
+<table border="1">
+    <thead>
+      <tr>
+        <th>EID</th>
+        <th>Age</th>
+        <th>Name</th>
+        <th>Branch</th>
+        <th>Amount</th>
+        <th>Hours</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>347</td>
+        <td>25</td>
+        <td>Alex</td>
+        <td>LA</td>
+        <td>189000</td>
+        <td>62</td>
+      </tr>
+      <tr>
+        <td>199</td>
+        <td>27</td>
+        <td>Sam</td>
+        <td>NY</td>
+        <td>251000</td>
+        <td>67</td>
+      </tr>
+    </tbody>
+  </table>
+  
+<h3>(3)</h3>
+<p>
+    readとwriteのロックの順番がそれぞれのプロセスで逆であることによりデッドロックが発生しています。
+以下が修正案です
+</p>
+<pre><code>
+1: lock "read" semaphore
+2: if (list.count() > 10000) {
+3:     print("too many")
+4: }
+5: unlock "read" semaphore
+
+6: lock "write" semaphore
+7: list.add(new_value)
+8: unlock "write" semaphore
+</code></pre>
+
+<h3>(4)(a)</h3>
+<img src="images/exam_image3.png" width="500" >
+
+<h3>(4)(b)</h3>
+この問題は値を逐次検索し、見つかったらひとつ前のリストの次の参照先をその次のリストのアドレスに付け替えることで削除を実装できます。<br>
+疑似コードにおいて、引数keyは削除したいキー・要素であるとする。
+hash_tableは各Bucketのリストの先頭のアドレスを示したテーブルであるとする。
+リストはvalueとnextというメンバーを持ち、valueはそのリストの値、nextは次のリストのアドレスの値である。
+<pre><code>
+Procedure delete_key(key)
+    index <- key % 7            # キーを7で割った値を格納
+    head <- hash_table[index]
+    
+    if head == null
+        return                  # 値がない場合は終了
+    endif
+
+    if head.value == key
+        hash_table[index] = head.next # ポインタの付け替え
+        return
+    endif
+    
+    prev <- head                # ひとつ前のリストのアドレス
+    curr <- head.next           # 値を調べるリストのアドレス
+
+    while curr != null
+        if curr.value == key
+            prev.next = curr.next  # ひとつ前のアドレスの次のポインタを今のリストの次のアドレスに付け替える
+            return
+        prev <- head               # アドレスの更新
+        curr <- head.next           
+    endwhile
+
+    return                         # キーが見つからず終了
+    
+</code></pre>
+
+<h2>大問3</h2>
+<h3>(1)</h3>
+<img src="images/exam_image4.png" width="500" >
+
+<h3>(2)</h3>
+<p>
+    擬似コードにおいて、与えられる引数はwordとnodeとする。
+wordは検索するワードであり、nodeは木における一番頂点に当たるノードであるとする。
+また、擬似コード内で利用する関数countは文字列の文字数を返す関数であるとする。
+</p>
+<pre><code>
+Procedure serch_word(node, word)
+    index <- 0
+    count <- count(word)      # 文字数を格納
+
+    while node != null
+        if node.data == word[index]  # 検索している文字の発見
+            index <- index + 1       # 次の文字を設定
+            if index == count  
+                return True          # 最後まで発見
+        
+            node <- node.child       # 次の子を検索
+        
+        else
+            node <- node.sibling    # 次の兄弟を検索
+
+    return False                    # 発見できず
+</code></pre>
+
+<h3>(3)</h3>
+アルファベットの検索なので、兄弟方向の探索は高々26回、単語長がなので子方向における探索回数はk回になる
+つまり最大でも計算回数は26k、よってO(k)
+
+<h3>(4)(a)</h3>
+10個の単語全てが同じハッシュのバケットに格納され、検索している単語が連結リストの最後尾にある場合が最悪のケースになる。
+よってその場合O(n)、今回の場合はO(10)
+
+<h3>(4)(b)</h3>
+10/20で0.5
+
+  <script>
+    // 自動目次生成スクリプト
+    document.addEventListener("DOMContentLoaded", function () {
+      const tocList = document.getElementById("toc-list");
+      const headers = document.querySelectorAll("h2, h3");
+      let idCounter = 0;
+
+      headers.forEach(header => {
+        const level = header.tagName.toLowerCase();
+        if (!header.id) {
+          idCounter += 1;
+          header.id = "section-" + idCounter;
+        }
+
+        const li = document.createElement("li");
+        li.style.marginLeft = level === "h3" ? "1em" : "0";
+
+        const link = document.createElement("a");
+        link.href = "#" + header.id;
+        link.textContent = header.textContent;
+
+        li.appendChild(link);
+        tocList.appendChild(li);
+      });
+    });
+  </script>
+
+</body>
+</html>
